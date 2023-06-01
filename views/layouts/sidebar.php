@@ -178,7 +178,59 @@ use yii\helpers\Url;
                           
                     </ul>
                 </li>
-                
+                  <!----------------------Menu Clientes---------------------------->  
+                <?php if(Yii::$app->controller->id == 'clientes' || Yii::$app->controller->id == 'clientes') {
+                    $li = "nav-item has-treeview active menu-open";
+                    $a = "nav-link active";
+                } else {
+                    $li = "nav-item has-treeview";
+                    $a = "nav-link";
+                } ?>
+                <li class="<?= $li; ?>">
+                    <a class="<?= $a; ?>" href="#">
+                        <i class="nav-icon fas fa-money-check-alt"></i>
+                        <p>Clientes <i class="right fas fa-angle"></i> </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <!-------------------------------------------------->
+                        <?php if (Yii::$app->controller->id == 'clientes' && in_array(\Yii::$app->controller->action->id, ['index', 'create', 'update', 'view'])) {
+                            $li = "nav-item active";
+                            $a = "nav-link active";
+                        } else {
+                            $li = "nav-item";
+                            $a = "nav-link";
+                        }
+                        ?>
+                        <li class="<?= $li; ?>">
+                            <a class="<?= $a; ?>" href="<?php echo Url::toRoute(['/clientes/clientes/index']); ?>">
+                                <i class="nav-icon far fa-circle text-yellow"></i>
+                                <p>Clientes</p>
+                            </a>
+                        </li>
+                        <!-------------------------------------------------->
+
+                        <!-------------------------------------------------->
+                        <?php if (Yii::$app->controller->id == 'direcciones' && in_array(\Yii::$app->controller->action->id, ['index', 'create', 'update', 'view'])) {
+                            $li = "nav-item active";
+                            $a = "nav-link active";
+                        } else {
+                            $li = "nav-item";
+                            $a = "nav-link";
+                        }
+                        ?>
+                        <li class="<?= $li; ?>">
+                            <a class="<?= $a; ?>" href="<?php echo Url::toRoute(['/clientes/direcciones/index']); ?>">
+                                <i class="nav-icon far fa-circle text-danger"></i>
+                                <p>Direcciones</p>
+                            </a>
+                        </li>
+                        <!-------------------------------------------------->
+
+                       
+                        <!-------------------------------------------------->
+                          
+                    </ul>
+                </li>
 
                 <!------- MENU USUARIOS ------->
                 <?php if (Yii::$app->controller->id == 'usuarios' || Yii::$app->controller->id == 'route' || Yii::$app->controller->id == 'permission' || Yii::$app->controller->id == 'role' || Yii::$app->controller->id == 'assignment') {

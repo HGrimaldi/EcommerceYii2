@@ -8,12 +8,14 @@ use app\modules\compras\models\Compras;
 use app\modules\compras\models\DetCompras;
 use app\modules\compras\models\DetComprasSearch;
 use Exception;
+use kartik\grid\EditableColumnAction;
 use Ramsey\Uuid\Uuid;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 
 /**
@@ -80,9 +82,36 @@ class DetComprasController extends Controller
         $grid = new ActiveDataProvider(['query' => DetCompras::find()->where(
             ['id_compras' => $id_compras])]);
 
+        $sub_total =0;
+        $iva = 0;
+        $total = 0;
+        $retencion = 0;  
+        
+        $detCompras = DetCompras::find()->where(['id_compras' => $id_compras])->all();
+
+        foreach($detCompras as $detCompras){
+            $sub_total += ($detCompras->costo * $detCompras->cantidad) - ($detCompras->costo * $detCompras->cantidad) *
+            ($detCompras->descuento / 100);
+            $iva += (($detCompras->costo * $detCompras->cantidad) - ($detCompras->costo * $detCompras->cantidad)
+            * ($detCompras->descuento / 100)) * (0.13);
+            $total += (($detCompras->costo * $detCompras->cantidad) - ($detCompras->costo * 
+            $detCompras->cantidad) * ($detCompras->descuento / 100)) * (1.13);
+        }
+        if($sub_total >= 1000){
+            $retencion = $sub_total * 0.01;
+        }
+
         if ($model->load($this->request->post())) {
             $transaction = Yii::$app->db->beginTransaction();
             try {
+                $duplicado = DetCompras::find()->where(['id_compras' => $id_compras, 'id_producto' => 
+                $model->id_producto])->one();
+
+                if($duplicado){
+                    Yii::$app->session->setFlash('warning' , 'El producto ya existe en la compra');
+                    return $this->redirect(['create' , 'id_compras' => $id_compras]);
+                }
+
                 $model->id_compras = $id_compras;
                 $model->uuid = Uuid::uuid4()->toString();
 
@@ -127,6 +156,10 @@ class DetComprasController extends Controller
                 'model' => $model,
                 'compra' => $compra,
                 'grid' => $grid,
+                'sub_total' => $sub_total,
+                'iva' => $iva,
+                'total' => $total,
+                'retencion' => $retencion,
             ]);
         }
     
@@ -159,11 +192,28 @@ class DetComprasController extends Controller
      * @return \yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id_det_compra)
+    public function actionDelete($id_det_compra,$id_compras)
     {
         $this->findModel($id_det_compra)->delete();
-
-        return $this->redirect(['index']);
+        Yii::$app->session->setFlash('danger','Registro eliminado con exito');
+        return $this->redirect(['create','id_compras' => $id_compras]);
+    }
+    public function actions()
+    {
+        return ArrayHelper::merge(parent::actions(),[
+           'editarcantidad' => [
+            'class' => EditableColumnAction::class,
+            'modelClass' => DetCompras::class,
+           ],
+           'editarcosto' => [
+            'class' => EditableColumnAction::class,
+            'modelClass' => DetCompras::class,
+           ], 
+           'editardescuento' => [
+            'class' => EditableColumnAction::class,
+            'modelClass' => DetCompras::class,
+           ],     
+        ]);
     }
 
     /**

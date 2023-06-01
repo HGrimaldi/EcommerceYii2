@@ -58,6 +58,8 @@ class ComposerStaticInit5f7b9774cd384dbd48ca41a40a722c7c
             'kartik\\select2\\' => 15,
             'kartik\\rating\\' => 14,
             'kartik\\range\\' => 13,
+            'kartik\\popover\\' => 15,
+            'kartik\\plugins\\popover\\' => 23,
             'kartik\\plugins\\fileinput\\' => 25,
             'kartik\\plugins\\depdrop\\' => 23,
             'kartik\\mpdf\\' => 12,
@@ -67,6 +69,7 @@ class ComposerStaticInit5f7b9774cd384dbd48ca41a40a722c7c
             'kartik\\file\\' => 12,
             'kartik\\export\\' => 14,
             'kartik\\editors\\' => 15,
+            'kartik\\editable\\' => 16,
             'kartik\\dynagrid\\' => 16,
             'kartik\\dialog\\' => 14,
             'kartik\\depdrop\\' => 15,
@@ -266,6 +269,14 @@ class ComposerStaticInit5f7b9774cd384dbd48ca41a40a722c7c
         array (
             0 => __DIR__ . '/..' . '/kartik-v/yii2-widget-rangeinput/src',
         ),
+        'kartik\\popover\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/kartik-v/yii2-popover-x/src',
+        ),
+        'kartik\\plugins\\popover\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/kartik-v/bootstrap-popover-x',
+        ),
         'kartik\\plugins\\fileinput\\' => 
         array (
             0 => __DIR__ . '/..' . '/kartik-v/bootstrap-fileinput',
@@ -301,6 +312,10 @@ class ComposerStaticInit5f7b9774cd384dbd48ca41a40a722c7c
         'kartik\\editors\\' => 
         array (
             0 => __DIR__ . '/..' . '/kartik-v/yii2-editors/src',
+        ),
+        'kartik\\editable\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/kartik-v/yii2-editable/src',
         ),
         'kartik\\dynagrid\\' => 
         array (

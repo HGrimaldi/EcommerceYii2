@@ -91,6 +91,9 @@ $config = [
         'compras' => [
             'class' => 'app\modules\compras\Compras',
         ],
+        'clientes' => [
+            'class' => 'app\modules\clientes\Clientes',
+        ],
     ],
     'params' => $params,
     'as access' => [
